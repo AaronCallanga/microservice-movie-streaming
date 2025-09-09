@@ -30,3 +30,14 @@ eureka.client.register-with-eureka=true
 6. In application.properties of the service, add:
     # Specify where the configurations will be fetch (config server address)
     spring.config.import=optional:configserver:http://localhost:8888
+
+7. Restart the app and verify if the config is being fetched. Check the logs
+    Fetching config from server at : http://localhost:8888
+    Go to the localhost:8888/SERVICE_NAME/default
+
+Note:
+    You can create different profiles such as -dev   -test   etc
+    1. Create a file movie-catalog-service-dev.properties
+    2. Add the different configurations
+    3. You can now verify it through localhost:8888/SERVICE_NAME/PROFILE
+            e.g localhost:8888/SERVICE_NAME/dev
