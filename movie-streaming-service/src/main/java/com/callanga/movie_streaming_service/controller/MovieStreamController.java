@@ -1,5 +1,8 @@
 package com.callanga.movie_streaming_service.controller;
 
+import com.callanga.movie_streaming_service.client.MovieCatalogClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +20,14 @@ import java.io.FileNotFoundException;
 public class MovieStreamController {
 
     private static final String VIDEO_DIRECTORY = "C:\\Users\\QC-SDO\\Desktop\\Microservice\\videos\\";
+    private Logger logger = LoggerFactory.getLogger(MovieStreamController.class);
+    private final MovieCatalogClient movieCatalogClient;
 
-    @GetMapping("/{videoPath}")
+    public MovieStreamController(MovieCatalogClient movieCatalogClient) {
+        this.movieCatalogClient = movieCatalogClient;
+    }
+
+    @GetMapping("/path/{videoPath}")
     public ResponseEntity<InputStreamResource> streamVideo(@PathVariable String videoPath) throws FileNotFoundException {
         File file = new File(VIDEO_DIRECTORY + videoPath);
         if (file.exists()) {
@@ -29,5 +38,12 @@ public class MovieStreamController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{movieId}")
+    public ResponseEntity<InputStreamResource> streamMovie(@PathVariable Long movieId) throws FileNotFoundException {
+        String path = movieCatalogClient.getMoviePath(movieId);
+        logger.info("Path: " + path);
+        return streamVideo(path);
     }
 }
