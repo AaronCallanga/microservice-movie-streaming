@@ -1,0 +1,32 @@
+1. @EnableDiscoveryClient
+2. @EnableConfigServer      - needs Config Server dependencies
+
+3. Config server app.properties
+# For local folder. Specify the destination of the directory
+spring.cloud.config.server.native.search-locations=C:\\Users\\QC-SDO\\Desktop\\Microservice\\config
+spring.profiles.active=native
+
+# Register the application to Eureka
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+# Optional, default is true
+eureka.client.fetch-registry=true
+eureka.client.register-with-eureka=true
+
+# For git, specify the url of the github repository
+#    spring.cloud.config.server.git.uri=
+#    spring.cloud.config.server.git.username=
+#    spring.cloud.config.server.git.password=
+
+4. Put Config Client depedency to other services
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+5. In the folder (C:\Users\QC-SDO\Desktop\Microservice\config), create a app.properties file per service
+    #The client app (e.g., your movie-catalog-service) will use its spring.application.name to decide which file to fetch.
+    e.g movie-catalog-service.properties
+
+6. In application.properties of the service, add:
+    # Specify where the configurations will be fetch (config server address)
+    spring.config.import=optional:configserver:http://localhost:8888
