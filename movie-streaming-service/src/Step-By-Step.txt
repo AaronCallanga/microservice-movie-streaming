@@ -1,0 +1,28 @@
+1. Register the application to Eureka Server (to be able to fetch services and register itself)
+    @EnableDiscoveryClient
+
+2. Set up eureka configuration
+    server.port=8080
+
+    eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+    eureka.client.register-with-eureka=true
+    eureka.client.fetch-registry=true
+
+2. Provide routing in app.properties (or through class)
+    - can also add another filter for authentication
+
+    # Routes
+    spring.cloud.gateway.server.webmvc.routes[0].id=movie-catalog-service       (This is just an identifier for the route. It's useful for internal referencing but doesn’t affect the routing logic)
+    spring.cloud.gateway.server.webmvc.routes[0].uri=http://localhost:8090      (service address instance)
+    spring.cloud.gateway.server.webmvc.routes[0].predicates[0]=Path=/movies/**  (if localhost:8080/movies/** then redirect to the movie-catalog-service)
+
+    spring.cloud.gateway.server.webmvc.routes[1].id=movie-streaming-service
+    spring.cloud.gateway.server.webmvc.routes[1].uri=http://localhost:8091
+    spring.cloud.gateway.server.webmvc.routes[1].predicates[0]=Path=/streams/** (if localhost:8080/streams/** then redirect to the movie-streaming-service)
+
+How It Works:
+- Spring Cloud Gateway is an API Gateway that routes HTTP requests to different backend services based on the configuration.
+
+- When a request is made to localhost:8080, the API Gateway checks the path to decide which service should handle the request.
+        If the request path starts with /movies/, it will forward the request to Movie Catalog Service at http://localhost:8090.
+        If the request path starts with /streams/, it will forward the request to Movie Streaming Service at http://localhost:8091.
