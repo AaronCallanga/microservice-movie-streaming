@@ -4,6 +4,7 @@ import com.callanga.movie_catalog_service.entity.MovieInfo;
 import com.callanga.movie_catalog_service.repository.MovieInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,11 @@ public class MovieInfoController {
     @GetMapping
     public List<MovieInfo> getAllMovieInfos() {
         return movieInfoRepository.findAll();
+    }
+
+    @GetMapping("/{movieId}")
+    public MovieInfo getMovieInfo(@PathVariable Long movieId) {
+        return movieInfoRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
     }
 }
