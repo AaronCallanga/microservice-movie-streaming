@@ -41,3 +41,7 @@ Note:
     2. Add the different configurations
     3. You can now verify it through localhost:8888/SERVICE_NAME/PROFILE
             e.g localhost:8888/SERVICE_NAME/dev
+
+👉 Best practice: Keep Eureka Server configs local.
+(But Eureka clients — your microservices — can fetch Eureka URL from Config Server.)
+👉 Best practice: Put Gateway configs in Config Server so they can be updated without redeploying the gateway.
