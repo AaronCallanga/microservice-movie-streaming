@@ -1,0 +1,9 @@
+1. @EnableDiscoveryClient - connects this application to the registry(eureka server)
+2. #Specify the port
+   server.port-8090
+3. # Specify the address where eureka server is running
+   eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+
+4. # Enable this application to fetch available service and register itself to the registry. Default is try (just for readability)
+   eureka.client.register-with-eureka=true
+   eureka.client.fetch-registry=true
