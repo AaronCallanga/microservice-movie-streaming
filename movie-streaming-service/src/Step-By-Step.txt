@@ -8,13 +8,14 @@
     eureka.client.register-with-eureka=true
     eureka.client.fetch-registry=true
 
-2. Provide routing in app.properties (or through class)
-    - can also add another filter for authentication
+3. Provide routing in app.properties (or through class)
+    - can also add another filter for authentication  (get jwt to auth service, all the other request will be validated by auth service before routing to specific service)
 
     # Routes
     spring.cloud.gateway.server.webmvc.routes[0].id=movie-catalog-service       (This is just an identifier for the route. It's useful for internal referencing but doesn’t affect the routing logic)
     spring.cloud.gateway.server.webmvc.routes[0].uri=http://localhost:8090      (service address instance)
     spring.cloud.gateway.server.webmvc.routes[0].predicates[0]=Path=/movies/**  (if localhost:8080/movies/** then redirect to the movie-catalog-service)
+    # spring.cloud.gateway.server.webmvc.routes[0].filters[0].=...     -> can add filters for authentication
 
     spring.cloud.gateway.server.webmvc.routes[1].id=movie-streaming-service
     spring.cloud.gateway.server.webmvc.routes[1].uri=http://localhost:8091
