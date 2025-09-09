@@ -5,9 +5,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class MovieCatalogClient {
-
+        // Implement FEIGN CLIENT
     private final RestTemplate restTemplate;
-    private static final String CATALOG_SERVICE_URL = "http://movie-catalog-service";      // application.name
+    private static final String CATALOG_SERVICE_URL = "http://movie-catalog-service";      // application.name, not specified the localhost and port to let loadbalancer choose
 
     public MovieCatalogClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

@@ -1,6 +1,6 @@
 package com.callanga.movie_streaming_service.client;
 
-public class MovieInfoDTO {
+public class MovieInfoDTO {     //Replicate the data in MovieInfo entity at movie-catalog-service
     private Long id;
     private String name;
     private String description;
