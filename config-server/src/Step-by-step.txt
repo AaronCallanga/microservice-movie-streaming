@@ -45,3 +45,4 @@ Note:
 👉 Best practice: Keep Eureka Server configs local.
 (But Eureka clients — your microservices — can fetch Eureka URL from Config Server.)
 👉 Best practice: Put Gateway configs in Config Server so they can be updated without redeploying the gateway.
+The original application.properties of the application can override the configuration in the repository/centralize configurations.
