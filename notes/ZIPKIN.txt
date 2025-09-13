@@ -1,0 +1,48 @@
+Zipkin is a distributed tracing system. It helps gather timing data needed to troubleshoot latency problems in service architectures. Features include both the collection and lookup of this data. In simple terms, it tracks the request lifecycle (trace it)
+
+1. Open Docker desktop (you can test if it is running through - docker version or docker info command
+2. docker run -d -p 9411:9411 openzipkin/zipkin		- command in cmd	
+			-p 9411:9411 	
+			<host port>:<container port>
+			- first 9411 (our localhost) that is the port where docker exposes the zipkin hosted in the docker 				envinronment to be accessible when we type localhost:9411
+			- second 9411 specify what port does zipkin will run in docker environment
+				
+3. You can now access the zipkin dashboard in localhost:9411
+
+--- TO ADD EACH SERVICES TO THE ZIPKIN ---
+For each services: 
+	1. Add the necessary dependencies
+    	<dependency>
+     	 <groupId>org.springframework.boot</groupId>
+    	  <artifactId>spring-boot-starter-actuator</artifactId>
+   	 </dependency>
+   	 <dependency>
+   	   <groupId>io.micrometer</groupId>
+     	 <artifactId>micrometer-tracing-bridge-brave</artifactId>
+    	</dependency>
+   	 <dependency>
+   	   <groupId>io.zipkin.reporter2</groupId>
+    	  <artifactId>zipkin-reporter-brave</artifactId>
+    	</dependency>
+
+	2. Specify where the Zipkin is running (Optional, if zipkin is not running on recommended 9411 port)
+		management.zipkin.tracing.endpoint=http://localhost:9411/api/v2/spans	(default, no need to specify)
+	3. Specify the sampling probability (default is 0.10). This is the percentage of the log of request (traces) 
+		will be send to zipkin. Only make it 1 in testing environment, 
+		0.10 allows you to lessen the load for all the request coming to zipkin server
+	management.tracing.sampling.probability=1
+	4. Now make a http request, and click RUN QUERY in zipkin UI (localhost:9411)
+
+--- CONCEPT ---
+1. TraceID - id of the request (the same for the whole lifecycle of the request)
+2. SpanID - id of every services called (same traceID but each service has their own spanID)
+	e.g 			CART-SERVICE -> INVENTORY-SERVICE -> PAYMENT-SERVICE	
+TraceId = 123123	SpanID = (123)			(124)		(125)
+	
+
+
+Example: 
+User complains “transactions are slow.”
+Prometheus metrics: show PaymentService latency jumped to 3s at 2PM.	(numerical data)
+Zipkin traces: show 80% of requests stuck on a slow SQL query.		(request flow/trace)
+Logs (ELK): reveal the exact SQL query causing the delay.		(centralize log)
