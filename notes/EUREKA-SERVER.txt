@@ -1,3 +1,18 @@
+Dependencies
+
+Eureka server needs starter-web dependency for Tomcat Web Server to run and to allow client microservices to register, 
+    receive heartbeats, and query the service registry. 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+
+
 1. @EnableEurekaServer
 2. Disable fetch-registry and registering the own server to the registry
 3. Run the application to the recommended port 8761
